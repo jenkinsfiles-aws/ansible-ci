@@ -5,146 +5,112 @@ pipeline {
   agent any
 
   environment {
-    GIT_URL_ANSIBLECFG = "https://github.com/TomonoriMatsumura/ansible-cfg.git"
-
-    SSH_PRIVATE_KEY = "centos7.pem"
+    GIT_URL = "https://github.com/jenkinsfiles-tm/ansible-configs_aws.git"
   }
 
   parameters {
     string(
-      name: 'ANSIBLE_INVENTORY_FILE_NAME',
+      name: 'GIT_BRANCHES',
       defaultValue: '',
-      description: "ansible-playbook command inventory file name"
+      description: "Git branch or tag name or commit id of GIT_URL of Jenkins job configuration file"
     )
   }
 
   stages {
     stage('Ansible CI') {
-      failFast false 
+      failFast false
       parallel {
         stage('Install ansible') {
           steps {
             build job: 'ansible/playbook',
               parameters: [
                             string(
-                              name: 'ANSIBLE_PLAYBOOK',
-                              value: "install.yml"
+                              name: 'CONFIG_FILE_PATH',
+                              value: "ansible/config.yml"
                             ),
                             string(
-                              name: 'GIT_URL_PLAYBOOKS',
-                              value: "${env.GITHUB_ANSIBLE_CENTOS7_ANSIBLE}"
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
                             ),
                             string(
-                              name: 'GIT_URL_ANSIBLECFG',
-                              value: "${env.GIT_URL_ANSIBLECFG}"
-                            ),
-                            string(
-                              name: 'INVENTORY_PARAMS',
-                              value: "-i ${env.ANSIBLE_INVENTORY_FILES_DIR}/${params.ANSIBLE_INVENTORY_FILE_NAME} -l ansible"
-                            ),
-                            string(
-                              name: 'SSH_PRIVATE_KEY',
-                              value: "${env.SSH_PRIVATE_KEY}"
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "ansible"
+                              value: "jeknins_job_ansible_cli_ansible"
                             )
                           ]
           }
         }
-    
+
         stage('Install AWS CLI') {
           steps {
             build job: 'ansible/playbook',
               parameters: [
                             string(
-                              name: 'ANSIBLE_PLAYBOOK',
-                              value: "install.yml"
+                              name: 'CONFIG_FILE_PATH',
+                              value: "awscli/config.yml"
                             ),
                             string(
-                              name: 'GIT_URL_PLAYBOOKS',
-                              value: "${env.GITHUB_ANSIBLE_CENTOS7_AWSCLI}"
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
                             ),
                             string(
-                              name: 'GIT_URL_ANSIBLECFG',
-                              value: "${env.GIT_URL_ANSIBLECFG}"
-                            ),
-                            string(
-                              name: 'INVENTORY_PARAMS',
-                              value: "-i ${env.ANSIBLE_INVENTORY_FILES_DIR}/${params.ANSIBLE_INVENTORY_FILE_NAME} -l awscli"
-                            ),
-                            string(
-                              name: 'SSH_PRIVATE_KEY',
-                              value: "${env.SSH_PRIVATE_KEY}"
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "awscli"
+                              value: "jeknins_job_ansible_cli_awscli"
                             )
                           ]
           }
         }
-    
+
         stage('Install AWX') {
           steps {
             build job: 'ansible/playbook',
               parameters: [
                             string(
-                              name: 'ANSIBLE_PLAYBOOK',
-                              value: "install.yml"
+                              name: 'CONFIG_FILE_PATH',
+                              value: "awx/config.yml"
                             ),
                             string(
-                              name: 'GIT_URL_PLAYBOOKS',
-                              value: "${env.GITHUB_ANSIBLE_CENTOS7_AWX}"
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
                             ),
                             string(
-                              name: 'GIT_URL_ANSIBLECFG',
-                              value: "${env.GIT_URL_ANSIBLECFG}"
-                            ),
-                            string(
-                              name: 'INVENTORY_PARAMS',
-                              value: "-i ${env.ANSIBLE_INVENTORY_FILES_DIR}/${params.ANSIBLE_INVENTORY_FILE_NAME} -l awx"
-                            ),
-                            string(
-                              name: 'SSH_PRIVATE_KEY',
-                              value: "${env.SSH_PRIVATE_KEY}"
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "awx"
+                              value: "jeknins_job_ansible_cli_awx"
                             )
                           ]
           }
         }
-    
+
         stage('Install chrome') {
           steps {
             build job: 'ansible/playbook',
               parameters: [
                             string(
-                              name: 'ANSIBLE_PLAYBOOK',
-                              value: "install.yml"
+                              name: 'CONFIG_FILE_PATH',
+                              value: "chrome/config.yml"
                             ),
                             string(
-                              name: 'GIT_URL_PLAYBOOKS',
-                              value: "${env.GITHUB_ANSIBLE_CENTOS7_CHROME}"
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
                             ),
                             string(
-                              name: 'GIT_URL_ANSIBLECFG',
-                              value: "${env.GIT_URL_ANSIBLECFG}"
-                            ),
-                            string(
-                              name: 'INVENTORY_PARAMS',
-                              value: "-i ${env.ANSIBLE_INVENTORY_FILES_DIR}/${params.ANSIBLE_INVENTORY_FILE_NAME} -l chrome"
-                            ),
-                            string(
-                              name: 'SSH_PRIVATE_KEY',
-                              value: "${env.SSH_PRIVATE_KEY}"
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "chrome"
+                              value: "jeknins_job_ansible_cli_chrome"
                             )
                           ]
           }
@@ -155,28 +121,20 @@ pipeline {
             build job: 'ansible/playbook',
               parameters: [
                             string(
-                              name: 'ANSIBLE_PLAYBOOK',
-                              value: "install.yml"
+                              name: 'CONFIG_FILE_PATH',
+                              value: "docker/config.yml"
                             ),
                             string(
-                              name: 'GIT_URL_PLAYBOOKS',
-                              value: "${env.GITHUB_ANSIBLE_CENTOS7_DOCKER}"
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
                             ),
                             string(
-                              name: 'GIT_URL_ANSIBLECFG',
-                              value: "${env.GIT_URL_ANSIBLECFG}"
-                            ),
-                            string(
-                              name: 'INVENTORY_PARAMS',
-                              value: "-i ${env.ANSIBLE_INVENTORY_FILES_DIR}/${params.ANSIBLE_INVENTORY_FILE_NAME} -l docker"
-                            ),
-                            string(
-                              name: 'SSH_PRIVATE_KEY',
-                              value: "${env.SSH_PRIVATE_KEY}"
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "docker"
+                              value: "jeknins_job_ansible_cli_docker"
                             )
                           ]
           }
@@ -187,32 +145,22 @@ pipeline {
             build job: 'ansible/playbook',
               parameters: [
                             string(
-                              name: 'ANSIBLE_PLAYBOOK',
-                              value: "install.yml"
+                              name: 'CONFIG_FILE_PATH',
+                              value: "exa/config.yml"
                             ),
                             string(
-                              name: 'GIT_URL_PLAYBOOKS',
-                              value: "${env.GITHUB_ANSIBLE_CENTOS7_EXA}"
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
                             ),
                             string(
-                              name: 'GIT_URL_ANSIBLECFG',
-                              value: "${env.GIT_URL_ANSIBLECFG}"
-                            ),
-                            string(
-                              name: 'INVENTORY_PARAMS',
-                              value: "-i ${env.ANSIBLE_INVENTORY_FILES_DIR}/${params.ANSIBLE_INVENTORY_FILE_NAME} -l exa"
-                            ),
-                            string(
-                              name: 'SSH_PRIVATE_KEY',
-                              value: "${env.SSH_PRIVATE_KEY}"
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "exa"
+                              value: "jeknins_job_ansible_cli_exa"
                             )
                           ]
-
-
           }
         }
 
@@ -221,28 +169,20 @@ pipeline {
             build job: 'ansible/playbook',
               parameters: [
                             string(
-                              name: 'ANSIBLE_PLAYBOOK',
-                              value: "install.yml"
+                              name: 'CONFIG_FILE_PATH',
+                              value: "jenkins_install/config.yml"
                             ),
                             string(
-                              name: 'GIT_URL_PLAYBOOKS',
-                              value: "${env.GITHUB_ANSIBLE_CENTOS7_JENKINS_INSTALL}"
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
                             ),
                             string(
-                              name: 'GIT_URL_ANSIBLECFG',
-                              value: "${env.GIT_URL_ANSIBLECFG}"
-                            ),
-                            string(
-                              name: 'INVENTORY_PARAMS',
-                              value: "-i ${env.ANSIBLE_INVENTORY_FILES_DIR}/${params.ANSIBLE_INVENTORY_FILE_NAME} -l jenkins"
-                            ),
-                            string(
-                              name: 'SSH_PRIVATE_KEY',
-                              value: "${env.SSH_PRIVATE_KEY}"
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "jenkins_install"
+                              value: "jeknins_job_ansible_cli_jenkins_install"
                             )
                           ]
           }
@@ -253,28 +193,20 @@ pipeline {
             build job: 'ansible/playbook',
               parameters: [
                             string(
-                              name: 'ANSIBLE_PLAYBOOK',
-                              value: "install.yml"
+                              name: 'CONFIG_FILE_PATH',
+                              value: "plantuml_server/config.yml"
                             ),
                             string(
-                              name: 'GIT_URL_PLAYBOOKS',
-                              value: "${env.GITHUB_ANSIBLE_CENTOS7_PLANTUML_SERVER}"
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
                             ),
                             string(
-                              name: 'GIT_URL_ANSIBLECFG',
-                              value: "${env.GIT_URL_ANSIBLECFG}"
-                            ),
-                            string(
-                              name: 'INVENTORY_PARAMS',
-                              value: "-i ${env.ANSIBLE_INVENTORY_FILES_DIR}/${params.ANSIBLE_INVENTORY_FILE_NAME} -l plantumlserver"
-                            ),
-                            string(
-                              name: 'SSH_PRIVATE_KEY',
-                              value: "${env.SSH_PRIVATE_KEY}"
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "plantumlserver"
+                              value: "jeknins_job_ansible_cli_plantuml_server"
                             )
                           ]
           }
@@ -285,33 +217,24 @@ pipeline {
             build job: 'ansible/playbook',
               parameters: [
                             string(
-                              name: 'ANSIBLE_PLAYBOOK',
-                              value: "install.yml"
+                              name: 'CONFIG_FILE_PATH',
+                              value: "vnc_server/config.yml"
                             ),
                             string(
-                              name: 'GIT_URL_PLAYBOOKS',
-                              value: "${env.GITHUB_ANSIBLE_CENTOS7_VNCSERVER}"
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
                             ),
                             string(
-                              name: 'GIT_URL_ANSIBLECFG',
-                              value: "${env.GIT_URL_ANSIBLECFG}"
-                            ),
-                            string(
-                              name: 'INVENTORY_PARAMS',
-                              value: "-i ${env.ANSIBLE_INVENTORY_FILES_DIR}/${params.ANSIBLE_INVENTORY_FILE_NAME} -l vncserver"
-                            ),
-                            string(
-                              name: 'SSH_PRIVATE_KEY',
-                              value: "${env.SSH_PRIVATE_KEY}"
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "vncserver"
+                              value: "jeknins_job_ansible_cli_vnc_server"
                             )
                           ]
           }
         }
-
       }
     }
   }
