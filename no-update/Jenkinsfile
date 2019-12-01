@@ -5,7 +5,7 @@ pipeline {
   agent any
 
   environment {
-    GIT_URL = "https://github.com/jenkinsfiles-tm/ansible-configs_aws.git"
+    GIT_URL = "https://github.com/jenkinsfiles-ansible-playbooks-configs/ansible-ci.git"
   }
 
   parameters {
@@ -20,13 +20,13 @@ pipeline {
     stage('Ansible CI') {
       failFast false
       parallel {
-        stage('Install ansible') {
+        stage('Ansible local') {
           steps {
             build job: 'ansible/playbook',
               parameters: [
                             string(
                               name: 'CONFIG_FILE_PATH',
-                              value: "ansible/config.yml"
+                              value: "local/ansible/config.yml"
                             ),
                             string(
                               name: 'GIT_BRANCHES',
@@ -38,19 +38,19 @@ pipeline {
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_ansible"
+                              value: "jeknins_job_ansible_cli_ansible_local"
                             )
                           ]
           }
         }
 
-        stage('Install AWS CLI') {
+        stage('Ansible ssh') {
           steps {
             build job: 'ansible/playbook',
               parameters: [
                             string(
                               name: 'CONFIG_FILE_PATH',
-                              value: "awscli/config.yml"
+                              value: "ssh/ansible/config.yml"
                             ),
                             string(
                               name: 'GIT_BRANCHES',
@@ -62,19 +62,19 @@ pipeline {
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_awscli"
+                              value: "jeknins_job_ansible_cli_ansible_ssh"
                             )
                           ]
           }
         }
 
-        stage('Install AWX') {
+        stage('AWS CLI local') {
           steps {
             build job: 'ansible/playbook',
               parameters: [
                             string(
                               name: 'CONFIG_FILE_PATH',
-                              value: "awx/config.yml"
+                              value: "local/awscli/config.yml"
                             ),
                             string(
                               name: 'GIT_BRANCHES',
@@ -86,19 +86,19 @@ pipeline {
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_awx"
+                              value: "jeknins_job_ansible_cli_awscli_local"
                             )
                           ]
           }
         }
 
-        stage('Install chrome') {
+        stage('AWS CLI ssh') {
           steps {
             build job: 'ansible/playbook',
               parameters: [
                             string(
                               name: 'CONFIG_FILE_PATH',
-                              value: "chrome/config.yml"
+                              value: "ssh/awscli/config.yml"
                             ),
                             string(
                               name: 'GIT_BRANCHES',
@@ -110,19 +110,19 @@ pipeline {
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_chrome"
+                              value: "jeknins_job_ansible_cli_awscli_ssh"
                             )
                           ]
           }
         }
 
-        stage('Install docker') {
+        stage('AWX local') {
           steps {
             build job: 'ansible/playbook',
               parameters: [
                             string(
                               name: 'CONFIG_FILE_PATH',
-                              value: "docker/config.yml"
+                              value: "local/awx/config.yml"
                             ),
                             string(
                               name: 'GIT_BRANCHES',
@@ -134,19 +134,19 @@ pipeline {
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_docker"
+                              value: "jeknins_job_ansible_cli_awx_local"
                             )
                           ]
           }
         }
 
-        stage('Install exa') {
+        stage('AWX ssh') {
           steps {
             build job: 'ansible/playbook',
               parameters: [
                             string(
                               name: 'CONFIG_FILE_PATH',
-                              value: "exa/config.yml"
+                              value: "ssh/awx/config.yml"
                             ),
                             string(
                               name: 'GIT_BRANCHES',
@@ -158,19 +158,19 @@ pipeline {
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_exa"
+                              value: "jeknins_job_ansible_cli_awx_ssh"
                             )
                           ]
           }
         }
 
-        stage('Install Jenkins') {
+        stage('Chrome local') {
           steps {
             build job: 'ansible/playbook',
               parameters: [
                             string(
                               name: 'CONFIG_FILE_PATH',
-                              value: "jenkins_install/config.yml"
+                              value: "local/chrome/config.yml"
                             ),
                             string(
                               name: 'GIT_BRANCHES',
@@ -182,19 +182,19 @@ pipeline {
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_jenkins_install"
+                              value: "jeknins_job_ansible_cli_chrome_local"
                             )
                           ]
           }
         }
 
-        stage('Install PlantUML Server') {
+        stage('Chrome ssh') {
           steps {
             build job: 'ansible/playbook',
               parameters: [
                             string(
                               name: 'CONFIG_FILE_PATH',
-                              value: "plantuml_server/config.yml"
+                              value: "ssh/chrome/config.yml"
                             ),
                             string(
                               name: 'GIT_BRANCHES',
@@ -206,19 +206,19 @@ pipeline {
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_plantuml_server"
+                              value: "jeknins_job_ansible_cli_chrome_ssh"
                             )
                           ]
           }
         }
 
-        stage('Install VNC Server') {
+        stage('Docker local') {
           steps {
             build job: 'ansible/playbook',
               parameters: [
                             string(
                               name: 'CONFIG_FILE_PATH',
-                              value: "vnc_server/config.yml"
+                              value: "local/docker/config.yml"
                             ),
                             string(
                               name: 'GIT_BRANCHES',
@@ -230,11 +230,228 @@ pipeline {
                             ),
                             string(
                               name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_vnc_server"
+                              value: "jeknins_job_ansible_cli_docker_local"
                             )
                           ]
           }
         }
+
+        stage('Docker ssh') {
+          steps {
+            build job: 'ansible/playbook',
+              parameters: [
+                            string(
+                              name: 'CONFIG_FILE_PATH',
+                              value: "ssh/docker/config.yml"
+                            ),
+                            string(
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
+                            ),
+                            string(
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
+                            ),
+                            string(
+                              name: 'WORKING_DIR',
+                              value: "jeknins_job_ansible_cli_docker_ssh"
+                            )
+                          ]
+          }
+        }
+
+        stage('Exa local') {
+          steps {
+            build job: 'ansible/playbook',
+              parameters: [
+                            string(
+                              name: 'CONFIG_FILE_PATH',
+                              value: "local/exa/config.yml"
+                            ),
+                            string(
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
+                            ),
+                            string(
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
+                            ),
+                            string(
+                              name: 'WORKING_DIR',
+                              value: "jeknins_job_ansible_cli_exa_local"
+                            )
+                          ]
+          }
+        }
+
+        stage('Exa ssh') {
+          steps {
+            build job: 'ansible/playbook',
+              parameters: [
+                            string(
+                              name: 'CONFIG_FILE_PATH',
+                              value: "ssh/exa/config.yml"
+                            ),
+                            string(
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
+                            ),
+                            string(
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
+                            ),
+                            string(
+                              name: 'WORKING_DIR',
+                              value: "jeknins_job_ansible_cli_exa_ssh"
+                            )
+                          ]
+          }
+        }
+
+        stage('Jenkins local') {
+          steps {
+            build job: 'ansible/playbook',
+              parameters: [
+                            string(
+                              name: 'CONFIG_FILE_PATH',
+                              value: "local/jenkins_install/config.yml"
+                            ),
+                            string(
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
+                            ),
+                            string(
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
+                            ),
+                            string(
+                              name: 'WORKING_DIR',
+                              value: "jeknins_job_ansible_cli_jenkins_install_local"
+                            )
+                          ]
+          }
+        }
+
+        stage('Jenkins ssh') {
+          steps {
+            build job: 'ansible/playbook',
+              parameters: [
+                            string(
+                              name: 'CONFIG_FILE_PATH',
+                              value: "ssh/jenkins_install/config.yml"
+                            ),
+                            string(
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
+                            ),
+                            string(
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
+                            ),
+                            string(
+                              name: 'WORKING_DIR',
+                              value: "jeknins_job_ansible_cli_jenkins_install_ssh"
+                            )
+                          ]
+          }
+        }
+
+        stage('PlantUML Server local') {
+          steps {
+            build job: 'ansible/playbook',
+              parameters: [
+                            string(
+                              name: 'CONFIG_FILE_PATH',
+                              value: "local/plantuml_server/config.yml"
+                            ),
+                            string(
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
+                            ),
+                            string(
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
+                            ),
+                            string(
+                              name: 'WORKING_DIR',
+                              value: "jeknins_job_ansible_cli_plantuml_server_local"
+                            )
+                          ]
+          }
+        }
+
+        stage('PlantUML Server ssh') {
+          steps {
+            build job: 'ansible/playbook',
+              parameters: [
+                            string(
+                              name: 'CONFIG_FILE_PATH',
+                              value: "ssh/plantuml_server/config.yml"
+                            ),
+                            string(
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
+                            ),
+                            string(
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
+                            ),
+                            string(
+                              name: 'WORKING_DIR',
+                              value: "jeknins_job_ansible_cli_plantuml_server_ssh"
+                            )
+                          ]
+          }
+        }
+
+        stage('VNC Server local') {
+          steps {
+            build job: 'ansible/playbook',
+              parameters: [
+                            string(
+                              name: 'CONFIG_FILE_PATH',
+                              value: "local/vnc_server/config.yml"
+                            ),
+                            string(
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
+                            ),
+                            string(
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
+                            ),
+                            string(
+                              name: 'WORKING_DIR',
+                              value: "jeknins_job_ansible_cli_vnc_server_local"
+                            )
+                          ]
+          }
+        }
+
+        stage('VNC Server ssh') {
+          steps {
+            build job: 'ansible/playbook',
+              parameters: [
+                            string(
+                              name: 'CONFIG_FILE_PATH',
+                              value: "ssh/vnc_server/config.yml"
+                            ),
+                            string(
+                              name: 'GIT_BRANCHES',
+                              value: "${params.GIT_BRANCHES}"
+                            ),
+                            string(
+                              name: 'GIT_URL',
+                              value: "${env.GIT_URL}"
+                            ),
+                            string(
+                              name: 'WORKING_DIR',
+                              value: "jeknins_job_ansible_cli_vnc_server_ssh"
+                            )
+                          ]
+          }
+        }
+
       }
     }
   }
