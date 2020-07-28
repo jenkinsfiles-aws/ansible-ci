@@ -308,54 +308,6 @@ pipeline {
           }
         }
 
-        stage('VNC Server local') {
-          steps {
-            build job: 'ansible/playbook',
-              parameters: [
-                            string(
-                              name: 'CONFIG_FILE_PATH',
-                              value: "local/vnc_server/config.yml"
-                            ),
-                            string(
-                              name: 'GIT_BRANCHES',
-                              value: "${params.GIT_BRANCHES}"
-                            ),
-                            string(
-                              name: 'GIT_URL',
-                              value: "${env.GIT_URL}"
-                            ),
-                            string(
-                              name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_vnc_server_local"
-                            )
-                          ]
-          }
-        }
-
-        stage('VNC Server ssh') {
-          steps {
-            build job: 'ansible/playbook',
-              parameters: [
-                            string(
-                              name: 'CONFIG_FILE_PATH',
-                              value: "ssh/vnc_server/config.yml"
-                            ),
-                            string(
-                              name: 'GIT_BRANCHES',
-                              value: "${params.GIT_BRANCHES}"
-                            ),
-                            string(
-                              name: 'GIT_URL',
-                              value: "${env.GIT_URL}"
-                            ),
-                            string(
-                              name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_vnc_server_ssh"
-                            )
-                          ]
-          }
-        }
-
       }
     }
   }
