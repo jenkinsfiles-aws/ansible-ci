@@ -260,54 +260,6 @@ pipeline {
           }
         }
 
-        stage('Exa local') {
-          steps {
-            build job: 'ansible/playbook',
-              parameters: [
-                            string(
-                              name: 'CONFIG_FILE_PATH',
-                              value: "local/exa/config.yml"
-                            ),
-                            string(
-                              name: 'GIT_BRANCHES',
-                              value: "${params.GIT_BRANCHES}"
-                            ),
-                            string(
-                              name: 'GIT_URL',
-                              value: "${env.GIT_URL}"
-                            ),
-                            string(
-                              name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_exa_local"
-                            )
-                          ]
-          }
-        }
-
-        stage('Exa ssh') {
-          steps {
-            build job: 'ansible/playbook',
-              parameters: [
-                            string(
-                              name: 'CONFIG_FILE_PATH',
-                              value: "ssh/exa/config.yml"
-                            ),
-                            string(
-                              name: 'GIT_BRANCHES',
-                              value: "${params.GIT_BRANCHES}"
-                            ),
-                            string(
-                              name: 'GIT_URL',
-                              value: "${env.GIT_URL}"
-                            ),
-                            string(
-                              name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_exa_ssh"
-                            )
-                          ]
-          }
-        }
-
         stage('Jenkins local') {
           steps {
             build job: 'ansible/playbook',
