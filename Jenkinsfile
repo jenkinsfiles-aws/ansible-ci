@@ -68,54 +68,6 @@ pipeline {
           }
         }
 
-        stage('AWS CLI local') {
-          steps {
-            build job: 'ansible/playbook',
-              parameters: [
-                            string(
-                              name: 'CONFIG_FILE_PATH',
-                              value: "local/awscli/config.yml"
-                            ),
-                            string(
-                              name: 'GIT_BRANCHES',
-                              value: "${params.GIT_BRANCHES}"
-                            ),
-                            string(
-                              name: 'GIT_URL',
-                              value: "${env.GIT_URL}"
-                            ),
-                            string(
-                              name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_awscli_local"
-                            )
-                          ]
-          }
-        }
-
-        stage('AWS CLI ssh') {
-          steps {
-            build job: 'ansible/playbook',
-              parameters: [
-                            string(
-                              name: 'CONFIG_FILE_PATH',
-                              value: "ssh/awscli/config.yml"
-                            ),
-                            string(
-                              name: 'GIT_BRANCHES',
-                              value: "${params.GIT_BRANCHES}"
-                            ),
-                            string(
-                              name: 'GIT_URL',
-                              value: "${env.GIT_URL}"
-                            ),
-                            string(
-                              name: 'WORKING_DIR',
-                              value: "jeknins_job_ansible_cli_awscli_ssh"
-                            )
-                          ]
-          }
-        }
-
         stage('AWX local') {
           steps {
             build job: 'ansible/playbook',
